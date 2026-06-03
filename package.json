@@ -12,6 +12,7 @@
     "vite": "^8.0.12"
   },
   "dependencies": {
+    "bootstrap": "^5.3.8",
     "datatables.net-dt": "^2.3.8"
   }
 }

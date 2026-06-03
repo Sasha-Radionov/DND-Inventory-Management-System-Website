@@ -3,47 +3,33 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inventory Management System</title>
-
+        
         <link rel="stylesheet" href="src/css/styles.css">
+        
+        <title>Inventory Management System</title>
+        <script type="module" src="src/main.js"></script>
     </head>
     
     <body>
         <h2>DND Inventory Management System</h2>
-        <table>
-            <tr>
-                <th></th>
-                <th>
-                    a
-                </th>
-                <th>
-                    a
-                </th>
-            </tr>
-            
-            <tr>
-                <th>
-                    a
-                </th>
-                <td>
-                    a
-                </td>
-                <td>
-                    a
-                </td>
-            </tr>
-            
-            <tr>
-                <th>
-                    a
-                </th>
-                <td>
-                    a
-                </td>
-                <td>
-                    a
-                </td>
-            </tr>
+
+        <table id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th class="width">Weight</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
         </table>
+
+        <button id="newRowBtn" class="p-1 m-2 btn btn-success btn-lg" title="Create New Row">Create New Row</button>
+
+        <button id="testRow" class="p-1 m-2 btn btn-primary btn-lg" title="Create Test Row">Create test row</button>
     </body>
 </html>
