@@ -33,8 +33,17 @@ document.getElementById('newRowBtn').addEventListener('click', () => {
   newRowModal.style.display = 'block';
 });
 
+// close modal funct
+function CloseModal() { 
+  newRowModal.style.display = 'none';
+}
+
+// close modal on 'X' being pressed
+document.getElementById('closeModalBtn').addEventListener('click', () => CloseModal());
+
+
 // accept inputs in the modal and create a row with these inputs
-// clear input fields and clos modal
+// clear input fields and close modal
 document.getElementById('acceptInputsBtn').addEventListener('click', () => {
   const icon = document.getElementById('modalIcon');
   const name = document.getElementById('modalName');
@@ -56,12 +65,7 @@ document.getElementById('acceptInputsBtn').addEventListener('click', () => {
   wght.value = null;
   prce.value = null;
 
-  newRowModal.style.display = 'none'
-});
-
-//close modal funct
-document.getElementById('closeModalBtn').addEventListener('click', function CloseModal() {
-  newRowModal.style.display = 'none';
+  CloseModal();
 });
 
 // delete a row from a table
