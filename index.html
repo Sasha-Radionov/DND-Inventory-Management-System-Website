@@ -13,15 +13,14 @@
     <body>
         <h2>DND Inventory Management System</h2>
 
-        <table id="inventoryTable">
+        <table class="w-75" id="inventoryTable">
             <thead>
                 <tr>
                     <th>Icon</th>
                     <th>Name</th>
                     <th>Description</th>
-                    <th class="width">Weight</th>
+                    <th>Weight</th>
                     <th>Price</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,10 +32,29 @@
         <button id="testRow" class="p-1 m-2 btn btn-primary btn-lg" title="Create Test Row">Create test row</button>
     </body>
 
+
+
     <div id="newRowModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
+            <span id="closeModalBtn" class="close">&times;</span>
+            <ul>
+                <li>
+                    <p>Icon: <input type="file" id="modalIcon"></p>
+                </li>
+                <li>
+                    <p>Name: <input type="text" id="modalName"></p>
+                </li>
+                <li>
+                    <p>Description: <input type="text" id="modalDescription"></p>
+                </li>
+                <li>
+                    <p>Weight: <input type="text" id="modalWeight"></p>
+                </li>
+                <li>
+                    <p>Price: <input type="text" id="modalPrice"></p>
+                </li>
+            </ul>
+            <button id="acceptInputsBtn" class="w-50 p-1 m-2 btn btn-success btn-lg" title="Create New Row">Done</button>
         </div>
     </div>
 </html>

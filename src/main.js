@@ -24,16 +24,48 @@ let table = new DataTable('#inventoryTable', {
   },
 });
 
+// store modal for multiple functions
+const newRowModal = document.getElementById('newRowModal');
+
+// create new row funct
+// opens modal with input fields for user to input data
 document.getElementById('newRowBtn').addEventListener('click', () => {
-  table.row.add([
-    `<input type="text">`,
-    `<input type="text">`,
-    `<input type="text">`,
-    `<input type="text">`,
-    `<input type="text">`,
-  ]).draw();
+  newRowModal.style.display = 'block';
 });
 
+// accept inputs in the modal and create a row with these inputs
+// clear input fields and clos modal
+document.getElementById('acceptInputsBtn').addEventListener('click', () => {
+  const icon = document.getElementById('modalIcon');
+  const name = document.getElementById('modalName');
+  const desc = document.getElementById('modalDescription');
+  const wght = document.getElementById('modalWeight');
+  const prce = document.getElementById('modalPrice');
+
+  table.row.add([
+    `${icon.value}`,
+    `${name.value}`,
+    `${desc.value}`,
+    `${wght.value}`,
+    `${prce.value}`,
+  ]).draw();
+
+  icon.value = null;
+  name.value = null;
+  desc.value = null;
+  wght.value = null;
+  prce.value = null;
+
+  newRowModal.style.display = 'none'
+});
+
+//close modal funct
+document.getElementById('closeModalBtn').addEventListener('click', function CloseModal() {
+  newRowModal.style.display = 'none';
+});
+
+// delete a row from a table
+// later a database data removal will be added
 document.getElementById('inventoryTable').addEventListener('click', (e) => {
   if (e.target.classList.contains('delete-item')) {
     const row = e.target.closest('tr');
