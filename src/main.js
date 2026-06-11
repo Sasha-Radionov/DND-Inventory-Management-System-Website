@@ -41,15 +41,24 @@ function CloseModal() {
 // close modal on 'X' being pressed
 document.getElementById('closeModalBtn').addEventListener('click', () => CloseModal());
 
-
 // accept inputs in the modal and create a row with these inputs
 // clear input fields and close modal
+// TODO: scale the preview picture to fixed size, clear the preview picture value on modal closing,
+// display picture on update not on load, display picture in table...
 document.getElementById('acceptInputsBtn').addEventListener('click', () => {
   const icon = document.getElementById('modalIcon');
   const name = document.getElementById('modalName');
   const desc = document.getElementById('modalDescription');
   const wght = document.getElementById('modalWeight');
   const prce = document.getElementById('modalPrice');
+
+  var file = icon.files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(e) {
+    var img = document.getElementById('iconPreview');
+    img.src = this.result;
+  }
 
   table.row.add([
     `${icon.value}`,
@@ -59,6 +68,7 @@ document.getElementById('acceptInputsBtn').addEventListener('click', () => {
     `${prce.value}`,
   ]).draw();
 
+  //preview = null;
   icon.value = null;
   name.value = null;
   desc.value = null;
