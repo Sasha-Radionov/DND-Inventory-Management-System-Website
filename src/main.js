@@ -5,17 +5,17 @@ let rowId = 0;
 
 // finds a table on the page with the matching selector
 // when a row is added, creates a default column (6th) with a delete button
-let table = new DataTable('#inventoryTable', {
+const table = new DataTable('#inventoryTable', {
   sorting: false,
   columns: [
-    null, 
+    null,
     null, 
     null, 
     null,
     null,
     {
       data: null,
-      defaultContent: '<button class="p-2 btn btn-danger btn-sm delete-item" title="Delete Item">Delete</button>',
+      defaultContent: '<button class="p-2 btn btn-danger btn-sm delete-item" title="delete-item">Delete</button>',
     },
   ],
   createdRow: function (row) {
@@ -34,52 +34,62 @@ document.getElementById('newRowBtn').addEventListener('click', () => {
 });
 
 // close modal funct
-function CloseModal() { 
+function closeModal() { 
   newRowModal.style.display = 'none';
 }
 
 // close modal on 'X' being pressed
-document.getElementById('closeModalBtn').addEventListener('click', () => CloseModal());
+document.getElementById('closeModalBtn').addEventListener('click', () => closeModal());
+
+// store icon and iconPreview input fields for multiple functions
+const icon = document.getElementById('modalIcon');
+const iconPrvw = document.getElementById('iconPreview')
+
+// callback function that renders uploaded image
+function renderIcon(callback) {
+  const file = icon.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = function() {
+    callback(this.result);
+  }
+}
+
+// on file being uploaded display a preview of the chosen image
+icon.addEventListener('change', () => {
+  renderIcon((src) => { iconPrvw.src = src});
+});
 
 // accept inputs in the modal and create a row with these inputs
-// clear input fields and close modal
-// TODO: scale the preview picture to fixed size, clear the preview picture value on modal closing,
-// display picture on update not on load, display picture in table...
+// then clear input fields and close modal
 document.getElementById('acceptInputsBtn').addEventListener('click', () => {
-  const icon = document.getElementById('modalIcon');
   const name = document.getElementById('modalName');
   const desc = document.getElementById('modalDescription');
   const wght = document.getElementById('modalWeight');
   const prce = document.getElementById('modalPrice');
+  
+  renderIcon((src) => {
+    table.row.add([
+      `<img class="item-icon" src="${src}">`,
+      `${name.value}`,
+      `${desc.value}`,
+      `${wght.value}`,
+      `${prce.value}`,
+    ]).draw();
 
-  var file = icon.files[0];
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function(e) {
-    var img = document.getElementById('iconPreview');
-    img.src = this.result;
-  }
+    iconPrvw.src = "";
+    icon.value = null;
+    name.value = null;
+    desc.value = null;
+    wght.value = null;
+    prce.value = null;
 
-  table.row.add([
-    `${icon.value}`,
-    `${name.value}`,
-    `${desc.value}`,
-    `${wght.value}`,
-    `${prce.value}`,
-  ]).draw();
-
-  //preview = null;
-  icon.value = null;
-  name.value = null;
-  desc.value = null;
-  wght.value = null;
-  prce.value = null;
-
-  CloseModal();
+    closeModal();
+  });
 });
 
 // delete a row from a table
-// later a database data removal will be added
 document.getElementById('inventoryTable').addEventListener('click', (e) => {
   if (e.target.classList.contains('delete-item')) {
     const row = e.target.closest('tr');
@@ -92,14 +102,12 @@ document.getElementById('inventoryTable').addEventListener('click', (e) => {
   }
 });
 
-// add test row into the table
-document.getElementById('testRow').addEventListener('click', () => {
-  table.row.add([
-    1,
-    2,
-    3,
-    4,
-    5,
-  ]);
-  table.draw();
-});
+
+// TODO: 
+// inputs validation, 
+// try-catch methods should display the error to th user, not the console,
+// display uploaded icons in the table, 
+// table data transfer to csv using python(and other way around), 
+// uploading and downloading csv data to/from the database, 
+// registration and log-in/out functions with personal inventories,
+// styling

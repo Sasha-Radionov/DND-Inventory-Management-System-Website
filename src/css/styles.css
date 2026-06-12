@@ -40,3 +40,11 @@ table, th, td {
   text-decoration: none;
   cursor: pointer;
 }
+
+#iconPreview {
+  height: 200px;
+}
+
+.item-icon {
+  height: 100px;
+}
