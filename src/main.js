@@ -39,20 +39,36 @@ function closeModal() {
 }
 
 // close modal on 'X' being pressed
-document.getElementById('closeModalBtn').addEventListener('click', () => closeModal());
+document.getElementById('closeModalBtn').addEventListener('click', () => {
+  closeModal();
+
+  iconPrvw.src = "src/assets/250px-PlaceholderLC.png";
+  icon.value = null;
+  name.value = null;
+  desc.value = null;
+  wght.value = null;
+  prce.value = null;
+});
 
 // store icon and iconPreview input fields for multiple functions
 const icon = document.getElementById('modalIcon');
 const iconPrvw = document.getElementById('iconPreview')
+const name = document.getElementById('modalName');
+const desc = document.getElementById('modalDescription');
+const wght = document.getElementById('modalWeight');
+const prce = document.getElementById('modalPrice');
 
 // callback function that renders uploaded image
 function renderIcon(callback) {
-  const file = icon.files[0];
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
+  if (icon.files.length != 0) {
+    const file = icon.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-  reader.onload = function() {
-    callback(this.result);
+    reader.onload = function() {
+      callback(this.result); };
+  } else { 
+    callback(iconPrvw.src);
   }
 }
 
@@ -63,11 +79,8 @@ icon.addEventListener('change', () => {
 
 // accept inputs in the modal and create a row with these inputs
 // then clear input fields and close modal
-document.getElementById('acceptInputsBtn').addEventListener('click', () => {
-  const name = document.getElementById('modalName');
-  const desc = document.getElementById('modalDescription');
-  const wght = document.getElementById('modalWeight');
-  const prce = document.getElementById('modalPrice');
+document.getElementById('newRowForm').addEventListener('submit', (event) => {
+  event.preventDefault();
   
   renderIcon((src) => {
     table.row.add([
@@ -78,7 +91,7 @@ document.getElementById('acceptInputsBtn').addEventListener('click', () => {
       `${prce.value}`,
     ]).draw();
 
-    iconPrvw.src = "";
+    iconPrvw.src = "src/assets/250px-PlaceholderLC.png";
     icon.value = null;
     name.value = null;
     desc.value = null;
@@ -106,7 +119,6 @@ document.getElementById('inventoryTable').addEventListener('click', (e) => {
 // TODO: 
 // inputs validation, 
 // try-catch methods should display the error to th user, not the console,
-// display uploaded icons in the table, 
 // table data transfer to csv using python(and other way around), 
 // uploading and downloading csv data to/from the database, 
 // registration and log-in/out functions with personal inventories,

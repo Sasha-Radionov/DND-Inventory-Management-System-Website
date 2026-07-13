@@ -48,3 +48,7 @@ table, th, td {
 .item-icon {
   height: 100px;
 }
+
+.requiredFieldStar {
+  color: red;
+}

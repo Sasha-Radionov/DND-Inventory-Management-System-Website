@@ -28,32 +28,34 @@
         </table>
 
         <button id="newRowBtn" class="p-1 m-2 btn btn-success btn-lg" title="Create New Row">Create New Row</button>
-    </body>
+        
+            <div id="newRowModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeModalBtn" class="close">&times;</span>
+                    <form id="newRowForm">    <!-- action="[URL]" sends data to selected url-->
+                        <img id="iconPreview" src="src/assets/250px-PlaceholderLC.png" alt=""><br><br>
+        
+                        <label for="ficon">Icon: </label>
+                        <input type="file" id="modalIcon" accept="image/jpg, image/jpeg, image/png"/><br><br>
+        
+                        <span class="requiredFieldStar">*</span><label for="fname">Item name: </label>
+                        <input type="text" id="modalName" required/><br><br>
+        
+                        <label for="fdescription">Description: </label>
+                        <input type="text" id="modalDescription"/><br><br>
+        
+                        <label for="fweight">Weight: </label>
+                        <input type="text" id="modalWeight"/><br><br>
+        
+                        <label for="fprice">Price: </label>
+                        <input type="text" id="modalPrice"/><br><br>
+        
+                        <input type="submit" class="w-50 p-1 m-2 btn btn-success btn-lg" value="Done">
+                    </form>
+                </div>
+            </div>
+        </body>
+    </html>
 
 
 
-    <div id="newRowModal" class="modal">
-        <div class="modal-content">
-            <span id="closeModalBtn" class="close">&times;</span>
-            <ul>
-                <img id="iconPreview" src="" alt="">
-                <li>
-                    <p>Icon: <input type="file" id="modalIcon"></p>
-                </li>
-                <li>
-                    <p>Name: <input type="text" id="modalName"></p>
-                </li>
-                <li>
-                    <p>Description: <input type="text" id="modalDescription"></p>
-                </li>
-                <li>
-                    <p>Weight: <input type="text" id="modalWeight"></p>
-                </li>
-                <li>
-                    <p>Price: <input type="text" id="modalPrice"></p>
-                </li>
-            </ul>
-            <button id="acceptInputsBtn" class="w-50 p-1 m-2 btn btn-success btn-lg" title="Create New Row">Done</button>
-        </div>
-    </div>
-</html>
