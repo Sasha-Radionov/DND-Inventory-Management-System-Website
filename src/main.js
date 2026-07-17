@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'; //import bootstrap styling
 import DataTable from 'datatables.net-dt'; //import DataTable
+import { createElement } from 'react';
 
 let rowId = 0;
 
@@ -19,7 +20,7 @@ const table = new DataTable('#inventoryTable', {
     },
   ],
   createdRow: function (row) {
-    row.setAttribute('id', rowId);
+    row.setAttribute('id', "row-" + rowId);
     rowId++;
   },
 });
@@ -27,6 +28,7 @@ const table = new DataTable('#inventoryTable', {
 // store modal for multiple functions
 const newRowModal = document.getElementById('newRowModal');
 
+// [MODAL FUNCTIONS]
 // create new row funct
 // opens modal with input fields for user to input data
 document.getElementById('newRowBtn').addEventListener('click', () => {
@@ -41,15 +43,17 @@ function closeModal() {
 // close modal on 'X' being pressed
 document.getElementById('closeModalBtn').addEventListener('click', () => {
   closeModal();
-
-  iconPrvw.src = "src/assets/250px-PlaceholderLC.png";
-  icon.value = null;
-  name.value = null;
-  desc.value = null;
-  wght.value = null;
-  prce.value = null;
 });
 
+// close modal on 'Escape' being pressed
+document.addEventListener('keydown', (e) => {
+  if (e.keyCode == 27 && newRowModal.style.display == 'block') {
+    closeModal();
+    resetFormInputs();
+  }
+});
+
+// [ICONS RENDERING]
 // store icon and iconPreview input fields for multiple functions
 const icon = document.getElementById('modalIcon');
 const iconPrvw = document.getElementById('iconPreview')
@@ -77,6 +81,7 @@ icon.addEventListener('change', () => {
   renderIcon((src) => { iconPrvw.src = src});
 });
 
+// [ROWS MANAGEMENT]
 // accept inputs in the modal and create a row with these inputs
 // then clear input fields and close modal
 document.getElementById('newRowForm').addEventListener('submit', (event) => {
@@ -85,18 +90,13 @@ document.getElementById('newRowForm').addEventListener('submit', (event) => {
   renderIcon((src) => {
     table.row.add([
       `<img class="item-icon" src="${src}">`,
-      `${name.value}`,
-      `${desc.value}`,
-      `${wght.value}`,
-      `${prce.value}`,
+      `${htmlToText(name.value)}`,
+      `${htmlToText(desc.value)}`,
+      `${htmlToText(wght.value)}`,
+      `${htmlToText(prce.value)}`,
     ]).draw();
 
-    iconPrvw.src = "src/assets/250px-PlaceholderLC.png";
-    icon.value = null;
-    name.value = null;
-    desc.value = null;
-    wght.value = null;
-    prce.value = null;
+    resetFormInputs();
 
     closeModal();
   });
@@ -115,10 +115,29 @@ document.getElementById('inventoryTable').addEventListener('click', (e) => {
   }
 });
 
+// [HELPER FUNCTIONS]
+// resets previous inputs and selected files in the form
+function resetFormInputs() {
+  iconPrvw.src = "src/assets/250px-PlaceholderLC.png";
+  icon.value = null;
+  name.value = null;
+  desc.value = null;
+  wght.value = null;
+  prce.value = null;
+} 
+
+// converts HTML code to text inserting it into div element
+function htmlToText(str) {
+  const el = document.createElement('div');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
 
 // TODO: 
-// inputs validation, 
-// try-catch methods should display the error to th user, not the console,
+// delete confirmation,
+// inputs validation (weight in kgs/lbs (for multiple(e.g. 5) items: 1kg (5kg)), price in pc/gc/sc/cc), 
+// try-catch methods should display the error to the user, not the console,
 // table data transfer to csv using python(and other way around), 
 // uploading and downloading csv data to/from the database, 
 // registration and log-in/out functions with personal inventories,
