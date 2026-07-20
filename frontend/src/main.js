@@ -88,16 +88,11 @@ document.getElementById('newRowForm').addEventListener('submit', (event) => {
   event.preventDefault();
   
   renderIcon((src) => {
-    table.row.add([
-      `<img class="item-icon" src="${src}">`,
-      `${htmlToText(name.value)}`,
-      `${htmlToText(desc.value)}`,
-      `${htmlToText(wght.value)}`,
-      `${htmlToText(prce.value)}`,
-    ]).draw();
+    table.row.add(
+      addRowData(src, name.value, desc.value, wght.value, prce.value)
+    ).draw();
 
     resetFormInputs();
-
     closeModal();
   });
 });
@@ -126,6 +121,17 @@ function resetFormInputs() {
   prce.value = null;
 } 
 
+// single function for inserting data into the new row columns
+function addRowData(imgSrc, name, desc, wght, prce) {
+  return [
+      `<img class="item-icon" src="${imgSrc}">`,
+      `${htmlToText(name)}`,
+      `${htmlToText(desc)}`,
+      `${htmlToText(wght)}`,
+      `${htmlToText(prce)}`
+    ];
+}
+
 // converts HTML code to text inserting it into div element
 function htmlToText(str) {
   const el = document.createElement('div');
@@ -133,8 +139,22 @@ function htmlToText(str) {
   return el.innerHTML;
 }
 
+fetch('http://127.0.0.1:5000/api/home')
+.then(res => res.json())
+.then((data) => {
+  if (!Array.isArray(data)) {
+    table.row.add(addRowData(data.icon, data.name, data.desc, data.wght, data.prce));
+  } else {
+    for(const obj of data) {
+      table.row.add(addRowData(obj.icon, obj.name, obj.desc, obj.wght, obj.prce));
+    }
+  }
+  table.draw();
+});
+
 
 // TODO: 
+// rescale the image before storing it,
 // delete confirmation,
 // inputs validation (weight in kgs/lbs (for multiple(e.g. 5) items: 1kg (5kg)), price in pc/gc/sc/cc), 
 // try-catch methods should display the error to the user, not the console,
@@ -142,3 +162,7 @@ function htmlToText(str) {
 // uploading and downloading csv data to/from the database, 
 // registration and log-in/out functions with personal inventories,
 // styling
+
+// ISSUE:
+// if an item is being added for example 3rd in order it gets id = row-2, if row-1 is being deleted, 
+// on the next data fetch row-2 data gets row-1 id even tho api data still states it is row-2
