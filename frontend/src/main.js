@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'; //import bootstrap styling
 import DataTable from 'datatables.net-dt'; //import DataTable
+import { v4 as uuidv4 } from 'uuid'; //import unique id generator funct
 import { createElement } from 'react';
 
 let rowId = 0;
@@ -15,13 +16,19 @@ const table = new DataTable('#inventoryTable', {
     null,
     null,
     {
-      data: null,
+      visible: false // hide id column
+    },
+    {
       defaultContent: '<button class="p-2 btn btn-danger btn-sm delete-item" title="delete-item">Delete</button>',
     },
   ],
-  createdRow: function (row) {
-    row.setAttribute('id', "row-" + rowId);
-    rowId++;
+  createdRow: function (row, data) {
+    if (data[5] === 'noId') {
+      const id = uuidv4();
+      row.setAttribute('id', "row-" + id);
+    } else {
+      row.setAttribute('id', data[5]);
+    }
   },
 });
 
@@ -89,7 +96,7 @@ document.getElementById('newRowForm').addEventListener('submit', (event) => {
   
   renderIcon((src) => {
     table.row.add(
-      addRowData(src, name.value, desc.value, wght.value, prce.value)
+      addRowData(src, name.value, desc.value, wght.value, prce.value, null)
     ).draw();
 
     resetFormInputs();
@@ -122,13 +129,18 @@ function resetFormInputs() {
 } 
 
 // single function for inserting data into the new row columns
-function addRowData(imgSrc, name, desc, wght, prce) {
+function addRowData(imgSrc, name, desc, wght, prce, id) {
+  if (id == null) {
+    id = 'noId';
+  }
+
   return [
-      `<img class="item-icon" src="${imgSrc}">`,
+      `<img class="item-icon" src="${htmlToText(imgSrc)}">`,
       `${htmlToText(name)}`,
       `${htmlToText(desc)}`,
       `${htmlToText(wght)}`,
-      `${htmlToText(prce)}`
+      `${htmlToText(prce)}`,
+      `${id}`
     ];
 }
 
@@ -143,10 +155,10 @@ fetch('http://127.0.0.1:5000/api/home')
 .then(res => res.json())
 .then((data) => {
   if (!Array.isArray(data)) {
-    table.row.add(addRowData(data.icon, data.name, data.desc, data.wght, data.prce));
+    table.row.add(addRowData(data.icon, data.name, data.desc, data.wght, data.prce, data.id));
   } else {
     for(const obj of data) {
-      table.row.add(addRowData(obj.icon, obj.name, obj.desc, obj.wght, obj.prce));
+      table.row.add(addRowData(obj.icon, obj.name, obj.desc, obj.wght, obj.prce, obj.id));
     }
   }
   table.draw();
