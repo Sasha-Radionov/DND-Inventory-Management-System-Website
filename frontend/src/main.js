@@ -3,13 +3,13 @@ import DataTable from 'datatables.net-dt'; //import DataTable
 import { v4 as uuidv4 } from 'uuid'; //import unique id generator funct
 import { createElement } from 'react';
 
-let rowId = 0;
+const apiURL = 'http://127.0.0.1:5000/api/home';
 
 // finds a table on the page with the matching selector
 // when a row is added, creates a default column (6th) with a delete button
 //
-// if its a new row created on frontend side - assign new id and upload data into api
-// if the row is downloaded from api assign existing data to rows and display
+// if it's a new row created on frontend side - assign new id and upload data into api
+// if the row is fetched from api assign existing data to rows and display them
 const table = new DataTable('#inventoryTable', {
   sorting: false,
   columns: [
@@ -39,7 +39,7 @@ const table = new DataTable('#inventoryTable', {
         'prce': `${data[4]}`
       };
 
-      fetch('http://127.0.0.1:5000/api/home', {
+      fetch(apiURL, {
         'method': "POST",
         'headers': {'Content-Type': "application/json"},
         'body': JSON.stringify(payload),
@@ -54,7 +54,6 @@ const table = new DataTable('#inventoryTable', {
 // store modal for multiple functions
 const newRowModal = document.getElementById('newRowModal');
 
-// create new row funct
 // opens modal with input fields for user to input data
 document.getElementById('newRowBtn').addEventListener('click', () => {
   newRowModal.style.display = 'block';
@@ -122,12 +121,19 @@ document.getElementById('newRowForm').addEventListener('submit', (event) => {
   });
 });
 
-// delete a row from a table
+// delete a row from a table and api
 document.getElementById('inventoryTable').addEventListener('click', (e) => {
   if (e.target.classList.contains('delete-item')) {
     const row = e.target.closest('tr');
+    const payload = row.id;
 
     try {
+      fetch(apiURL, {
+        'method': "DELETE",
+        'headers': {'Content-Type': "application/json"},
+        'body': JSON.stringify(payload),
+      });
+
       table.row(row).remove().draw();
     } catch {
       console.error('Failed to delete item. Please try again later.');
@@ -170,8 +176,8 @@ function htmlToText(str) {
 }
 
 // [API MANAGEMENT]
-// download data from api
-fetch('http://127.0.0.1:5000/api/home')
+// fetch data from api
+fetch(apiURL)
 .then(res => res.json())
 .then((data) => {
   if (!Array.isArray(data)) {
