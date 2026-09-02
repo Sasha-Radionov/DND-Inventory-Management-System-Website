@@ -10,7 +10,7 @@ const apiURL = 'http://127.0.0.1:5000/api/home';
 //
 // if it's a new row created on frontend side - assign new id and upload data into api
 // if the row is fetched from api assign existing data to rows and display them
-const table = new DataTable('#inventoryTable', {
+const table = new DataTable('#inventory-table', {
   sorting: false,
   columns: [
     null,
@@ -65,8 +65,9 @@ function closeModal() {
 }
 
 // close modal on 'X' being pressed
-document.getElementById('closeModalBtn').addEventListener('click', () => {
+document.getElementById('close-modal-btn').addEventListener('click', () => {
   closeModal();
+  resetFormInputs();
 });
 
 // close modal on 'Escape' being pressed
@@ -79,12 +80,12 @@ document.addEventListener('keydown', (e) => {
 
 // [ICONS RENDERING]
 // store icon and iconPreview input fields for multiple functions
-const icon = document.getElementById('modalIcon');
-const iconPrvw = document.getElementById('iconPreview')
-const name = document.getElementById('modalName');
-const desc = document.getElementById('modalDescription');
-const wght = document.getElementById('modalWeight');
-const prce = document.getElementById('modalPrice');
+const icon = document.getElementById('modal-icon');
+const iconPrvw = document.getElementById('icon-preview')
+const name = document.getElementById('modal-name');
+const desc = document.getElementById('modal-description');
+const wght = document.getElementById('modal-weight');
+const prce = document.getElementById('modal-price');
 
 // callback function that renders uploaded image
 function renderIcon(callback) {
@@ -108,7 +109,7 @@ icon.addEventListener('change', () => {
 // [ROWS MANAGEMENT]
 // accept inputs in the modal and create a row with these inputs
 // then clear input fields and close modal
-document.getElementById('newRowForm').addEventListener('submit', (event) => {
+document.getElementById('new-row-form').addEventListener('submit', (event) => {
   event.preventDefault();
   
   renderIcon((src) => {
@@ -122,7 +123,7 @@ document.getElementById('newRowForm').addEventListener('submit', (event) => {
 });
 
 // delete a row from a table and api
-document.getElementById('inventoryTable').addEventListener('click', (e) => {
+document.getElementById('inventory-table').addEventListener('click', (e) => {
   if (e.target.classList.contains('delete-item')) {
     const row = e.target.closest('tr');
     const payload = row.id;
