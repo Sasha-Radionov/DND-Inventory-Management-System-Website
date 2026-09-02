@@ -1,5 +1,5 @@
 table, th, td {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 /* The Modal (background) */
@@ -41,14 +41,74 @@ table, th, td {
   cursor: pointer;
 }
 
-#iconPreview {
-  height: 200px;
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+h2 {
+  justify-self: center;
+}
+
+#dt-search-0 {
+  margin-top: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+#new-row-form>h3 {
+  justify-self: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1.rem;
+}
+
+.icon-zone {
+  flex-direction: column;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  flex-wrap: nowrap;
 }
 
 .item-icon {
-  height: 100px;
+  height: 10rem;
 }
 
-.requiredFieldStar {
+.required-field-star {
   color: red;
+}
+
+body {
+  padding: 1rem;
+  max-width: 100%;
+}
+
+#inventory-table {
+  margin-top: 1rem;
+}
+
+#inventory-table th, td {
+  padding: 0.5rem;
+}
+
+form>div.flex-container {
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-bottom: 1rem;
+}
+
+.input-zone {
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.input-labels {
+  flex-direction: column;
+  align-items: end;
+  justify-content: space-evenly;
+  padding-right: 0.5rem;
+}
+
+.input-fields {
+  flex-direction: column; 
+  justify-content: space-evenly;
 }
